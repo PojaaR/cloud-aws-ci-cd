@@ -1,9 +1,24 @@
-version: 0.2  
-phases:  
+version: 0.2
+phases:
   install:
+    runtime-versions:
+      python: 3.8
     commands:
-      - aws cloudformation package --template-file search-photos.yaml --s3-bucket lambda-deployement-pipeline-bucket10 --output-template-file search-photos.yaml
-artifacts:  
-  type: zip
-  files:
-    - search-photos.yaml
+      - echo "Installing dependencies..."
+      - pip install -r requirements.txt -t lib
+  build:
+    commands:
+      - echo "Zipping deployment package..."
+      - cd lib
+      - zip -r9 ../deployment_package.zip .
+      - cd ..
+      - cp deployment_package.zip assignment2_lf1.zip
+      - zip -g assignment2_lf1.zip lambda_function.py
+      - cp deployment_package.zip search_photos.zip
+      - zip -g search_photos.zip lambda_function.py
+  post_build:
+    commands:
+      - echo "Updating lambda Function..."
+      - aws lambda update-function-code --function-name assignment2_lf1 --zip-file fileb://assignment2_llf1.zip
+      - aws lambda update-function-code --function-name search-photos --zip-file fileb://search_photos.zip
+      - echo "DONE!!"
