@@ -1,21 +1,50 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: 2010-09-09
 Transform: 'AWS::Serverless-2016-10-31'
-Description: Lambda NodeJS starter project
-Parameters:
-LambdaName:
-    Description: "search_photos"
-    Type: "String"
-LambdaRole:
-    Description: "arn:aws:iam::725740804677:role/service-role/search_photos-role-1tri1388"
-    Type: "String"
+Description: photo album web application
+
 Resources:
-  LambdaInstagramWrapper:
+  photoalbumui:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: "photoalbumui"
+
+  assignment2b2:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: "assignment2b2" 
+
+  index-photos:
     Type: 'AWS::Serverless::Function'
     Properties:
-      Role: !Ref LambdaRole
-      FunctionName: !Ref LambdaName
-      MemorySize: 512
-      Timeout: 60
-      Handler: index.handler
-      Runtime: nodejs6.10
-      CodeUri: .
+      FunctionName: 
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.8
+      CodeUri: 
+      Description: index photos and update in elastic search
+      MemorySize: 
+      Timeout: 
+      Role: 'arn:aws:iam::725740804677:role/service-role/assignment2_lf1-role-fyo0v0bh'
+      Environment:
+        Variables:
+          REGION: us-east-1
+
+  search-photos:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: search_photos
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.8
+      CodeUri: 
+      Description: Search photos in Elastic Search
+      MemorySize: 
+      Timeout: 
+      Role: 'arn:aws:iam::206476521689:role/service-role/search-photos-role-z6vccxx0'
+      Events:
+        ImageBot:
+          Type: Api
+          Properties:
+            Path: 
+            Method: 
+      Environment:
+        Variables:
+          REGION: us-east-1
