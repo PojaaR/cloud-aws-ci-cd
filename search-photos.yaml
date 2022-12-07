@@ -23,7 +23,7 @@ Resources:
       Description: index photos and update in elastic search
       MemorySize: 
       Timeout: 
-      Role: 'arn:aws:iam::725740804677:role/service-role/assignment2_lf1-role-fyo0v0bh'
+      Role: ''
       Environment:
         Variables:
           REGION: us-east-1
@@ -38,7 +38,7 @@ Resources:
       Description: Search photos in Elastic Search
       MemorySize: 
       Timeout: 
-      Role: 'arn:aws:iam::206476521689:role/service-role/search-photos-role-z6vccxx0'
+      Role: ''
       Events:
         ImageBot:
           Type: Api
